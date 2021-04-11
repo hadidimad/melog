@@ -1,26 +1,32 @@
-import userEvent from "@testing-library/user-event";
 import React, { useState } from "react";
 import Navbar from "./components/Navbar";
 import Posts from "./components/Posts";
+import Post from "./components/Post";
+
 
 function App() {
   const [page, setPage] = useState("home");
-  const [showingPost, setShowingPost] = useState({});
+  const [showingPost, setShowingPost] = useState(0);
 
   const pageChangeHandler = (pageName) => {
     if (pageName !== "post") {
-      setShowingPost({});
+      setShowingPost(0);
     }
     setPage(pageName);
   };
 
+  const showPostHandler = (id) => {
+    pageChangeHandler("post");
+    setShowingPost(id);
+  };
+
   let content;
   if (page === "home") {
-    content = <Posts />;
+    content = <Posts showPostHandler={showPostHandler}/>;
   } else if (page === "newPost") {
     content = <h1>new post page</h1>;
   } else if (page === "post") {
-    content = <h1>single post page</h1>;
+    content = <Post id={showingPost}/>;
   }
   return (
     <div>

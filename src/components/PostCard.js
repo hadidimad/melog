@@ -3,7 +3,7 @@ import React from "react";
 const postCard = (props) => {
   return (
     <div className="col-md-3 m-1">
-      <div className="card ">
+      <div className="card " onClick={()=>{props.showPostHandler(props.data.id)}}>
         <div className="card-body">
           <h5 className="card-title">{props.data.title}</h5>
           <p className="card-text">{props.data.exerpt}</p>

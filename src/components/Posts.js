@@ -14,30 +14,35 @@ const Posts = (props) => {
     //loadPosts();
     setAllPosts([
       {
+        id: 1,
         title: "test title",
         author: "hadi",
         date: "2021/2/3",
         exerpt: "short test text",
       },
       {
+        id: 2,
         title: "test title",
         author: "hadi",
         date: "2021/2/3",
         exerpt: "short test text",
       },
       {
+        id: 3,
         title: "test title",
         author: "hadi",
         date: "2021/2/3",
         exerpt: "short test text",
       },
       {
+        id: 4,
         title: "test title",
         author: "hadi",
         date: "2021/2/3",
         exerpt: "short test text",
       },
       {
+        id: 5,
         title: "test title",
         author: "hadi",
         date: "2021/2/3",
@@ -50,7 +55,13 @@ const Posts = (props) => {
   return (
     <div className="row">
       {allPosts.map((post) => {
-        return <PostCard data={post} />;
+        return (
+          <PostCard
+            key={post.id}
+            data={post}
+            showPostHandler={props.showPostHandler}
+          />
+        );
       })}
     </div>
   );
