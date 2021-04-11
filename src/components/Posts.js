@@ -5,66 +5,38 @@ import PostCard from "./PostCard";
 
 const Posts = (props) => {
   let [allPosts, setAllPosts] = useState([]);
+  const [loadingStatus, setLoadingStatus] = useState(0);
   const loadPosts = () => {
-    Axios.get(url + "/posts").then((data) => {
-      setAllPosts(data);
-    });
+    Axios.get(url + "/post").then((response) => {
+      setAllPosts(response.data);
+    }).catch((err)=>{
+        console.log(err);
+        setLoadingStatus(2);
+    })
   };
   useEffect(() => {
-    //loadPosts();
-    setAllPosts([
-      {
-        id: 1,
-        title: "test title",
-        author: "hadi",
-        date: "2021/2/3",
-        exerpt: "short test text",
-      },
-      {
-        id: 2,
-        title: "test title",
-        author: "hadi",
-        date: "2021/2/3",
-        exerpt: "short test text",
-      },
-      {
-        id: 3,
-        title: "test title",
-        author: "hadi",
-        date: "2021/2/3",
-        exerpt: "short test text",
-      },
-      {
-        id: 4,
-        title: "test title",
-        author: "hadi",
-        date: "2021/2/3",
-        exerpt: "short test text",
-      },
-      {
-        id: 5,
-        title: "test title",
-        author: "hadi",
-        date: "2021/2/3",
-        exerpt: "short test text",
-      },
-    ]);
+    loadPosts();
     console.log("loaded");
   }, []);
-
-  return (
-    <div className="row">
-      {allPosts.map((post) => {
-        return (
-          <PostCard
-            key={post.id}
-            data={post}
-            showPostHandler={props.showPostHandler}
-          />
-        );
-      })}
-    </div>
-  );
+  if (loadingStatus === 1) {
+    return (
+      <div className="row">
+        {allPosts.map((post) => {
+          return (
+            <PostCard
+              key={post.id}
+              data={post}
+              showPostHandler={props.showPostHandler}
+            />
+          );
+        })}
+      </div>
+    );
+  } else if (loadingStatus === 0) {
+    return <h1>Loading ...</h1>;
+  } else {
+    return <h1> there is problem in loading posts</h1>;
+  }
 };
 
 export default Posts;
