@@ -18,8 +18,6 @@ def post_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response("RIDI", status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET", "PUT", "DELETE"])
@@ -40,8 +38,6 @@ def post_details(request, pk):
     elif request.method == "DELETE":
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    else:
-        return Response("RIDI", status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET", "PUT", "DELETE"])
@@ -62,8 +58,6 @@ def comment_details(request, pk):
     elif request.method == "DELETE":
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    else:
-        return Response("RIDI", status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["POST"])
@@ -75,5 +69,3 @@ def add_comment(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response("RIDI", status=status.HTTP_400_BAD_REQUEST)
