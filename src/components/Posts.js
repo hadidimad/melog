@@ -9,6 +9,8 @@ const Posts = (props) => {
   const loadPosts = () => {
     Axios.get(url + "/post").then((response) => {
       setAllPosts(response.data);
+      setLoadingStatus(1);
+
     }).catch((err)=>{
         console.log(err);
         setLoadingStatus(2);

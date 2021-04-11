@@ -10,16 +10,19 @@ function NewComment(props) {
   const [alertMsg, setAlertMsg] = useState("");
 
   const postHandler = () => {
+      console.log(author,text,email);
     axios
       .post(url + "/post/" + props.postId, {
         author: author,
         text: text,
         email: email,
-        post: props.postId,
       })
       .then((resp) => {
         props.commentAdded();
         setShowAlert(false);
+        setAuthor("");
+        setText("");
+        setEmail("");
       })
       .catch((err) => {
         setShowAlert(true);
@@ -39,6 +42,7 @@ function NewComment(props) {
               type="text"
               className="form-control"
               placeholder="your name"
+              value={author}
               onChange={(event) => {
                 setAuthor(event.target.value);
               }}
@@ -50,6 +54,7 @@ function NewComment(props) {
               type="email"
               className="form-control"
               placeholder="example@mail.com"
+              value={email}
               onChange={(event) => {
                 setEmail(event.target.value);
               }}
@@ -61,6 +66,7 @@ function NewComment(props) {
             <textarea
               className="form-control"
               rows="2"
+              value={text}
               onChange={(event) => {
                 setText(event.target.value);
               }}
