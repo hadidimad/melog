@@ -25,7 +25,7 @@ def post_details(request, pk):
     if request.method == "POST":
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(post=pk)
+            serializer.save(post=Post.objects.get(pk=pk))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
