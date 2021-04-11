@@ -20,24 +20,32 @@ def post_list(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["GET", "PUT", "DELETE"])
+@api_view(["GET", "PUT", "DELETE", "POST"])
 def post_details(request, pk):
-    try:
-        post = Post.objects.get(pk=pk)
-    except Post.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    if request.method == "GET":
-        serializer = PostSerializer(post)
-        return Response(serializer.data)
-    elif request.method == "PUT":
-        serializer = PostSerializer(post, data=request.data)
+    if request.method == "POST":
+        serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(post=pk)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        try:
+            post = Post.objects.get(pk=pk)
+        except Post.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if request.method == "GET":
+            serializer = PostSerializer(post)
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == "DELETE":
-        post.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        elif request.method == "PUT":
+            serializer = PostSerializer(post, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        elif request.method == "DELETE":
+            post.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(["GET", "PUT", "DELETE"])
@@ -58,14 +66,3 @@ def comment_details(request, pk):
     elif request.method == "DELETE":
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-@api_view(["POST"])
-def add_comment(request):
-    if request.method == "POST":
-        serializer = CommentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
