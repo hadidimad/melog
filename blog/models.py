@@ -14,6 +14,7 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    date_time = models.DateTimeField(auto_now_add=False)
     text = models.TextField(validators=[MinLengthValidator(10)])
     author = models.CharField(max_length=200)
     email = models.EmailField(max_length=254)
